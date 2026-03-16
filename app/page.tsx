@@ -62,7 +62,7 @@ export default function Home() {
                 met[cat.categoryName] = cat.score;
               });
               setMetrics(met);
-            }
+            }  
 
             const ctx = canvasRef.current.getContext("2d");
             if (ctx && results.faceLandmarks && results.faceLandmarks.length > 0) {
@@ -74,10 +74,6 @@ export default function Home() {
               ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
               const drawingUtils = new DrawingUtils(ctx);
               for (const landmarks of results.faceLandmarks) {
-                // Remove the TESSELATION mesh by commenting it out or deleting the line
-                // drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_TESSELATION, { color: "#C0C0C070", lineWidth: 1 });
-
-                // Add lineWidth: 1 to all remaining connectors to make them sharp
                 drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE, { color: "#FF3030", lineWidth: 1 });
                 drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_RIGHT_EYEBROW, { color: "#FF3030", lineWidth: 1 });
                 drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_LEFT_EYE, { color: "#30FF30", lineWidth: 1 });
