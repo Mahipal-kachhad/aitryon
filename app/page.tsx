@@ -119,8 +119,8 @@ export default function Home() {
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
                 const roll = Math.atan2(dy, dx);
-                const yaw = (noseBridge.x - midX) * 10;
-                const baseScale = distance / 20;
+                const yaw = (noseBridge.x - midX ) * 10;
+                const baseScale = distance / 5000;
 
                 setGlassesTransform({
                   position: [
@@ -128,7 +128,7 @@ export default function Home() {
                     -(midY - 0.5) * 5.5, // Vertical mapping
                     -midZ * 5 // Depth mapping
                   ],
-                  rotation: [0, yaw, roll],
+                  rotation: [0, yaw - 0.18, -roll],
                   scale: [baseScale, baseScale, baseScale],
                   visible: true
                 });
@@ -191,7 +191,7 @@ export default function Home() {
         />
 
         <div className="absolute inset-0 z-20 pointer-events-none">
-          <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
+          <Canvas camera={{ position: [0, 0, 5], fov: 15 }}>
             <OrbitControls />
             <axesHelper args={[5]} />
             <ambientLight intensity={1.5} />

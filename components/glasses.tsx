@@ -1,5 +1,4 @@
 import { useGLTF } from "@react-three/drei";
-import * as THREE from "three";
 import { JSX, useEffect } from "react";
 
 const Glasses = (props: JSX.IntrinsicElements["mesh"]) => {
