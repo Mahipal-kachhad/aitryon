@@ -47,15 +47,34 @@ export default function Home() {
         const vision = await FilesetResolver.forVisionTasks(
           "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.32/wasm"
         );
-        const landmarker = await FaceLandmarker.createFromOptions(vision, {
-          baseOptions: {
-            modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
-            delegate: "GPU"
-          },
-          outputFaceBlendshapes: true,
-          runningMode: "VIDEO",
-          numFaces: 1
-        });
+        
+        let landmarker;
+        try {
+          // Try GPU delegate first
+          landmarker = await FaceLandmarker.createFromOptions(vision, {
+            baseOptions: {
+              modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+              delegate: "GPU"
+            },
+            outputFaceBlendshapes: true,
+            runningMode: "VIDEO",
+            numFaces: 1
+          });
+          console.log("FaceLandmarker initialized with GPU delegate");
+        } catch (gpuErr) {
+          console.warn("GPU delegate failed, falling back to CPU:", gpuErr);
+          // Fallback to CPU
+          landmarker = await FaceLandmarker.createFromOptions(vision, {
+            baseOptions: {
+              modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task"
+            },
+            outputFaceBlendshapes: true,
+            runningMode: "VIDEO",
+            numFaces: 1
+          });
+          console.log("FaceLandmarker initialized with CPU fallback");
+        }
+        
         if (active) {
           faceLandmarker = landmarker;
           setIsLoaded(true);
